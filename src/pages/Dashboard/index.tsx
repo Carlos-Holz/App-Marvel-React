@@ -1,9 +1,7 @@
-import React, { useState, useEffect, FormEvent } from "react";
-import { Link } from "react-router-dom";
-import api from "../../services/api";
-import Character from "../Characters";
+import React, { useState, FormEvent } from 'react';
+import api from '../../services/api';
 
-import { Container, Title, Form, Error, Repositories } from "./styles";
+import { Container, Title, Form, Chars } from './styles';
 
 interface Character {
     id: string;
@@ -15,71 +13,49 @@ interface Character {
 }
 
 const Dashboard: React.FC = () => {
-    const [newChar, setNewChar] = useState('');
-    const [inputError, setInputError] = useState ('');
-    const [characters, setCharacters] = useState <Character[]>(() => {
-        const storageCharacter = localStorage.getItem('Characters',);
+    const [newChar, setnewChar] = useState('');
+    const [chars, setChars] = useState<Character[]>([]);
 
-        if (storageCharacter){
-            return JSON.parse(storageCharacter);
-        }
-
-        return[];
-    });
-
-    const handleAddRepository = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    const pesquisarChar = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if(!newChar){
-            setInputError("Digite o nome de um personagem para pesquisar!!")
-            return;
-        }
+        try{
+            const response = await api.get(`${newChar}/json/`);
+            const charDados = response.data;
 
-        try {
-            const response = await api.get<Character>(`characters/${newChar}`);
-            const character = response.data;
-
-            setCharacters([...characters, character])
-            setNewChar('');
-            setInputError('');
+            setChars([...chars, charDados]);
 
         } catch(err){
-            setInputError("Personagem não encontrado.");
-        }
-    }
 
-    useEffect(() => {
-        localStorage.setItem(
-            'Characters',
-            JSON.stringify(characters)
-        )
-    }, [characters]);
+        }
+    };
 
     return (
         <Container>
-            <Title>Pesquise personagens da Marvel por nome</Title>
+            <Title>Pesquise personagens da MARVEL</Title>
 
-            <Form onSubmit={handleAddRepository}>
-            <input
-                value={newChar}
-                onChange={e => setNewChar(e.target.value)}
-                placeholder="Digite o nome de um personagem..."
-            />
+            <Form onSubmit={pesquisarChar}>
+                <input
+                    type="text"
+                    placeholder="Digite o nome do personagem..."
+                    onChange={e => setnewChar(e.target.value)}
+                />
                 <button type="submit">Pesquisar</button>
             </Form>
 
-            {inputError && <Error>{inputError}</Error>}
-
-            <Repositories>
-                {characters.map(Character => (
-                    <Link to="#">
-                        <img src={`${characters.thumbnail.path}.${characters.thumbnail.extension}`}/>
-                            <strong>{characters.name}</strong>
-                    </Link>
+            <Chars>
+                {chars.map(char => (
+                    <a href="#">
+                        <p className='uf'>{char.id}</p>
+                        <div>
+                            <img src={`${char.thumbnail.path}.${char.thumbnail.extension}`}/>
+                            <strong>{char.name}</strong>
+                        </div>
+                    </a>
                 ))}
-            </Repositories>
+            </Chars>
         </Container>
-    )
-}
+    );
+};
 
 export default Dashboard;

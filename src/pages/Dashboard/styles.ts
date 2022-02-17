@@ -62,7 +62,7 @@ export const Error = styled.span`
     padding: 0 24px;
 `;
 
-export const Repositories = styled.div`
+export const Chars = styled.div`
     margin-top: 80px;
     max-widht: 700px;
     a {
