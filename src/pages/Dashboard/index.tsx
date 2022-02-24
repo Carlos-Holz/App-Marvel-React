@@ -1,60 +1,58 @@
-import React, { useState, FormEvent } from 'react';
-import api from '../../services/api';
+import React, { useState, FormEvent } from "react";
+import api from "../../services/api";
 
-import { Container, Title, Form, Chars } from './styles';
+import { Title, Form, Box, Card1, Card2} from "./styles";
 
 interface Character {
     id: string;
-    name: string;
+    title: string;
     thumbnail:{
         path: string;
         extension: string;
     };
-}
+  }
 
 const Dashboard: React.FC = () => {
-    const [newChar, setnewChar] = useState('');
-    const [chars, setChars] = useState<Character[]>([]);
+    const [characters, setCharacters] = useState<Character []> ([]);
+    const [idPesquisa, setIdPesquisa] = useState('');
 
-    const pesquisarChar = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        try{
-            const response = await api.get(`${newChar}/json/`);
-            const charDados = response.data;
-
-            setChars([...chars, charDados]);
-
-        } catch(err){
-
-        }
+    const pesquisar = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+     
+     api
+        .get(`/comics/${idPesquisa}`)
+        .then(response => {
+          setCharacters(response.data.data.results)
+        })
+        .catch(err => console.log(err));
     };
 
     return (
-        <Container>
-            <Title>Pesquise personagens da MARVEL</Title>
-
-            <Form onSubmit={pesquisarChar}>
-                <input
-                    type="text"
-                    placeholder="Digite o nome do personagem..."
-                    onChange={e => setnewChar(e.target.value)}
-                />
+        <>
+            <Title>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Marvel_Logo.svg" alt="" />
+            </Title>
+      
+            <Form onSubmit={pesquisar}>
+                <input onChange={e => setIdPesquisa(e.target.value)} placeholder="Digite um número para pesquisar um quadrinho da MARVEL..."/>
                 <button type="submit">Pesquisar</button>
             </Form>
 
-            <Chars>
-                {chars.map(char => (
-                    <a href="#">
-                        <p className='uf'>{char.id}</p>
-                        <div>
-                            <img src={`${char.thumbnail.path}.${char.thumbnail.extension}`}/>
-                            <strong>{char.name}</strong>
-                        </div>
-                    </a>
-                ))}
-            </Chars>
-        </Container>
+            
+          <Box>
+            <Card1>
+                {characters.map(characters => {
+                    return (
+                        <Card2 key = {characters.id}>
+                            <div id="img" />
+                                <img src={`${characters.thumbnail.path}.${characters.thumbnail.extension}`}/>
+                                <strong>{characters.title}</strong>
+                        </Card2>
+                    )
+                })}
+            </Card1>
+          </Box>
+        </>
     );
 };
 

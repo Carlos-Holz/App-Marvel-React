@@ -1,103 +1,85 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.div`
-    width: 80%;
-    margin: auto;
+export const Box = styled.main`
+    display: flex;
+    flex-wrap: wrap;
+
+    height: 100%;
+    width: 100%;
 `;
 
-export const Title = styled.h2`
-    text-align: center;
-    font-size: 48px;
-    color: #ff0000;
-    max-width: 875px;
-    line-height: 56px;
-
-    margin-top: 80px;
+export const Title = styled.image`
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    margin-left: 400px;
+    margin-bottom: 10px;
+    width: 100px;
+    height: 100px;
+    z-index: 1;
 `;
 
 export const Form = styled.form`
     margin-top: 40px;
-    max-width: 700px;
-
+    max-width: 100%;
     display: flex;
 
-    input{
+    input::placeholder {
+        color: #ff0000;
+    }
+
+    input {
         flex: 1;
         height: 40px;
         padding: 0 24px;
-        border: 2px solid #fff;
-        border-radius: 10px 0 0 10px;
-        color: #3a3a3a;
-        border-right: 0;
-
-        &::placeholder{
-            color: #a8a8d3;
-        }
+        border: 0;
+        border-radius: 5px 0 0 5px;
+        color: #ff0000;
+        margin-bottom: 25px;
     }
-
     button {
         width: 210px;
         height: 40px;
         background: #ff0000;
-        border-radius: 0 10px 10px 0;
+        border-radius: 0 5px 5px 0;
         border: 0;
         color: #fff;
         font-weight: bold;
-
-        transition: background-color: 0.2s;
-
-        &:hover{
-            background: ${shade(0.2, '#ff2121')};
+        transition: background-color 0.2s;
+        &:hover {
+            background: ${shade(0.2, "#ff0000")};
         }
     }
+`;
 
+export const Card1 = styled.div`
+    display: flex;
+    flex-wrap: wrap;
     
+
+    justify-content: center;
 `;
 
-export const Error = styled.span`
-    display: block;
-    color: #c53030;
-    margin-top: 8px;
-    padding: 0 24px;
-`;
+export const Card2 = styled.div`
+    background: #ff0000;
+    height: 350px;
+    width: 300px;
+    margin: 10px;
+    margin-left: 300px;
+    border-radius: 10px;
+    overflow: hidden;
 
-export const Chars = styled.div`
-    margin-top: 80px;
-    max-widht: 700px;
-    a {
-        background: #fff;
-        border-radius: 5px;
-        width: 100%;
-        padding: 24px;
-        display: block;
-        text-decoration: none;
+    strong {
+        color: #ff0000;
+        padding: 10px;
+        justify-content: center;
         display: flex;
-        align-items: center;
-        transition: transform 0.2s;
-        &:hover {
-            transform: translate(10px);
-        }
-        img {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-        }
-        div {
-            margin: 0 16px;
-            flex: 1;
-            strong {
-                font-size: 20px;
-                color: #3d3d4d;
-            }
-            p {
-                font-size: 18px;
-                color: #a8a8b3;
-                margin-top: 4px;
-            }
-        }
-        & + a {
-            margin-top: 16px;
-        }
+    }
+
+    img{
+        width: 300px;
+        height: 350px;
+        z-index: 1;
     }
 `;
